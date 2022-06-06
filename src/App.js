@@ -23,7 +23,7 @@ class App extends Component {
             </NavbarBrand>
           </div>
         </Navbar>
-        <Menu dishes={this.state.dishes} />
+        <Menu dishes={this.state.dishes} />        
       </>
     );
   }
