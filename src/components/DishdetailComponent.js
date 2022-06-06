@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, CardGroup, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
 
-class DishDetails extends Component {
+class DishDetail extends Component {
 
     constructor(props) {
         super(props);
@@ -54,12 +54,14 @@ class DishDetails extends Component {
     render() {
 
         return (
-            <div className='row'>
-                {this.renderDish(this.props.selectedDish)}
-                {this.renderComments(this.props.selectedDish.comments)}
+            <div className='container'>
+                <div className='row'>
+                    {this.props.dish == undefined ? <div></div> : this.renderDish(this.props.dish)}
+                    {this.props.dish == undefined ? <div></div> : this.renderComments(this.props.dish.comments)}
+                </div>
             </div>
         );
     }
 }
 
-export default DishDetails;
+export default DishDetail;
