@@ -4,13 +4,31 @@ import { Link } from 'react-router-dom';
 
 function About(props) {
 
-    const leaders = props.leaders.map((leader) => {
-        return (
-            <p>Leader {leader.name}</p>
-        );
-    });
+    function RenderLeader({ leaderDetails }) {
 
-    return(
+        const leaders = leaderDetails.map((leader) => {
+            return (
+                <div key={leader.id}>
+                    <Media tag='li' className='mt-5'>
+                        <Media left object className='mr-5' src={leader.image} alt={leader.name} />
+                        <Media body>
+                            <Media heading>{leader.name}</Media>
+                            <p>{leader.designation}</p>
+                            <p>{leader.description}</p>
+                        </Media>
+                    </Media>
+                </div>
+            );
+        });
+
+        return (
+            <>
+                {leaders}
+            </>
+        );
+    }
+
+    return (
         <div className="container">
             <div className="row">
                 <Breadcrumb>
@@ -20,7 +38,7 @@ function About(props) {
                 <div className="col-12">
                     <h3>About Us</h3>
                     <hr />
-                </div>                
+                </div>
             </div>
             <div className="row row-content">
                 <div className="col-12 col-md-6">
@@ -52,8 +70,8 @@ function About(props) {
                                 <p className="mb-0">You better cut the pizza in four pieces because
                                     I'm not hungry enough to eat six.</p>
                                 <footer className="blockquote-footer">Yogi Berra,
-                                <cite title="Source Title">The Wit and Wisdom of Yogi Berra,
-                                    P. Pepe, Diversion Books, 2014</cite>
+                                    <cite title="Source Title">The Wit and Wisdom of Yogi Berra,
+                                        P. Pepe, Diversion Books, 2014</cite>
                                 </footer>
                             </blockquote>
                         </CardBody>
@@ -66,7 +84,7 @@ function About(props) {
                 </div>
                 <div className="col-12">
                     <Media list>
-                        {leaders}
+                        <RenderLeader leaderDetails={props.leaders} />
                     </Media>
                 </div>
             </div>
