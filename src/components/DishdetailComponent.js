@@ -10,7 +10,7 @@ const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => (val) && (val.length >= len);
 
-class CommentButton extends Component {
+class CommentForm extends Component {
 
     constructor(props) {
         super(props);
@@ -25,13 +25,12 @@ class CommentButton extends Component {
     toggleModal() {
         this.setState({
             isModalOpen: !this.state.isModalOpen
-        })
+        });
     }
 
-    handleSubmit(values) {
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
-        // event.preventDefault();
+    handleSubmit(values) {       
+        this.toggleModal();
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment)
     }
 
     render() {
@@ -82,7 +81,7 @@ class CommentButton extends Component {
                             <Row className="form-group">
                                 <Label htmlFor="comment" md={3}>Comment</Label>
                                 <Col md={12}>
-                                    <Control.textarea style={{resize: 'none'}} model=".comment" id="comment" name="comment"
+                                    <Control.textarea style={{ resize: 'none' }} model=".comment" id="comment" name="comment"
                                         rows="12"
                                         className="form-control" />
                                 </Col>
@@ -116,23 +115,29 @@ function FormatDate(string) {
     return `${monthNames[month]} ${day}, ${year}`;
 }
 
-function RenderComments({ comments }) {
-    return (
-        <div className='col-12 col-md-5 m-1'>
-            <CardTitle>Comments</CardTitle>
-            <ul className='list-unstyled'>
-                {comments.map((item) => {
-                    return (
-                        <li key={item.id} className='mb-1'>
-                            <p>{item.comment}</p>
-                            <p>-- {item.author}, {FormatDate(item.date)}</p>
-                        </li>
-                    );
-                })}
-            </ul>
-            <CommentButton />
-        </div>
-    );
+function RenderComments({ comments, addComment, dishId }) {
+    if (comments != null) {
+        return (
+            <div className='col-12 col-md-5 m-1'>
+                <CardTitle>Comments</CardTitle>
+                <ul className='list-unstyled'>
+                    {comments.map((item) => {
+                        return (
+                            <li key={item.id} className='mb-1'>                                
+                                <p>{item.comment}</p>
+                                <p>-- {item.author}, {FormatDate(item.date)}</p>
+                            </li>
+                        );
+                    })}
+                </ul>
+                <CommentForm dishId={dishId} addComment={addComment} />
+            </div>
+        );
+    } else {
+        return (
+            <div></div>
+        );
+    }
 }
 
 function RenderDish({ dish }) {
@@ -151,7 +156,7 @@ function RenderDish({ dish }) {
 
 const DishDetail = (props) => {
 
-    if (props.dish != null) {
+    if (props.dish != null) {        
         return (
             <div className='container'>
                 <div className='row'>
@@ -170,11 +175,14 @@ const DishDetail = (props) => {
                 </div>
                 <div className='row'>
                     <RenderDish dish={props.dish} />
-                    <RenderComments comments={props.comments} />
+                    <RenderComments comments={props.comments}
+                        addComment={props.addComment}
+                        dishId={props.dish.id}                        
+                    />                    
                 </div>
             </div>
         );
-    }
+    }    
 }
 
 
