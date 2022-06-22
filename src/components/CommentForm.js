@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import {
-    Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem,
-    Modal, ModalHeader, ModalBody, Button, Label, Row, Col
-} from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Modal, ModalHeader, ModalBody, Button, Label, Row, Col } from 'reactstrap';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 
 const required = (val) => val && val.length;
@@ -60,14 +56,14 @@ class CommentButton extends Component {
                             <Row className='form-group'>
                                 <Label md={3}>Your Name</Label>
                                 <Col md={12}>
-                                    <Control.text model='.author' id='author' name='author'
+                                    <Control.text model='.yourname' id='yourname' name='yourname'
                                         placeholder='Your Name' className='form-control' validators={{
-                                            required, minLength: minLength(3), maxLength: maxLength(15)
+                                            required, minLength: minLength(2), maxLength: maxLength(15)
                                         }}
                                     />
                                     <Errors
                                         className='text-danger'
-                                        model='.author'
+                                        model='.yourname'
                                         show='touched'
                                         messages={{
                                             required: 'Required* ',
@@ -102,80 +98,4 @@ class CommentButton extends Component {
     }
 }
 
-
-function FormatDate(string) {
-    const monthNames = [
-        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-        "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"
-    ];
-
-    var dateObj = new Date(string);
-    var month = dateObj.getUTCMonth();
-    var day = dateObj.getUTCDate();
-    var year = dateObj.getUTCFullYear();
-    return `${monthNames[month]} ${day}, ${year}`;
-}
-
-function RenderComments({ comments }) {
-    return (
-        <div className='col-12 col-md-5 m-1'>
-            <CardTitle>Comments</CardTitle>
-            <ul className='list-unstyled'>
-                {comments.map((item) => {
-                    return (
-                        <li key={item.id} className='mb-1'>
-                            <p>{item.comment}</p>
-                            <p>-- {item.author}, {FormatDate(item.date)}</p>
-                        </li>
-                    );
-                })}
-            </ul>
-            <CommentButton />
-        </div>
-    );
-}
-
-function RenderDish({ dish }) {
-    return (
-        <div className='col-12 col-md-5 m-1'>
-            <Card>
-                <CardImg width='100%' object='true' src={dish.image} alt={dish.name} />
-                <CardBody>
-                    <CardTitle>{dish.name}</CardTitle>
-                    <CardText>{dish.description}</CardText>
-                </CardBody>
-            </Card>
-        </div>
-    );
-}
-
-const DishDetail = (props) => {
-
-    if (props.dish != null) {
-        return (
-            <div className='container'>
-                <div className='row'>
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to='/menu'>Menu</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            {props.dish.name}
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                    <div className='col-12'>
-                        <h3>{props.dish.name}</h3>
-                        <hr />
-                    </div>
-                </div>
-                <div className='row'>
-                    <RenderDish dish={props.dish} />
-                    <RenderComments comments={props.comments} />
-                </div>
-            </div>
-        );
-    }
-}
-
-
-export default DishDetail;
+export default CommentButton;
